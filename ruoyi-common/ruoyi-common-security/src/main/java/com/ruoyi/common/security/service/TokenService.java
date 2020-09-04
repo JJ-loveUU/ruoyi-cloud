@@ -48,6 +48,7 @@ public class TokenService {
 //    loginUser.setToken(token);
 
     Map<String, Object> loginUserMap = new HashMap<>();
+    String
     loginUserMap.put("userid", loginUser.getSysUser().getUserId());
     loginUserMap.put("username", loginUser.getSysUser().getUserName());
     loginUserMap.put("loginTime", System.currentTimeMillis());
