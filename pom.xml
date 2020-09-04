@@ -19,7 +19,7 @@
         <java.version>1.8</java.version>
         <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
         <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
-		<spring-boot-admin.version>2.2.3</spring-boot-admin.version>
+        <spring-boot-admin.version>2.2.3</spring-boot-admin.version>
         <spring-boot.mybatis>2.1.2</spring-boot.mybatis>
         <nacos.version>1.3.0</nacos.version>
         <swagger.fox.version>2.9.2</swagger.fox.version>
@@ -30,8 +30,11 @@
         <commons.fileupload.version>1.3.3</commons.fileupload.version>
         <velocity.version>1.7</velocity.version>
         <fastjson.version>1.2.73</fastjson.version>
-		<poi.version>3.17</poi.version>
+        <poi.version>3.17</poi.version>
         <common-pool.version>2.6.2</common-pool.version>
+        <jwt.version>3.10.3</jwt.version>
+        <lombok.version>1.18.12</lombok.version>
+        <hutool.version>5.4.1</hutool.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -47,7 +50,7 @@
                 <scope>import</scope>
             </dependency>
 
-			<!-- SpringCloud Alibaba 微服务 -->
+            <!-- SpringCloud Alibaba 微服务 -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -56,12 +59,12 @@
                 <scope>import</scope>
             </dependency>
 
-			<!-- Alibaba Nacos 配置 -->
-			<dependency>
-			    <groupId>com.alibaba.nacos</groupId>
-			    <artifactId>nacos-client</artifactId>
-			    <version>${nacos.version}</version>
-			</dependency>
+            <!-- Alibaba Nacos 配置 -->
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos.version}</version>
+            </dependency>
 
             <!-- SpringBoot 依赖配置 -->
             <dependency>
@@ -71,21 +74,21 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-			
+
             <!--  SpringBoot 监控客户端 -->
             <dependency>
                 <groupId>de.codecentric</groupId>
                 <artifactId>spring-boot-admin-starter-client</artifactId>
                 <version>${spring-boot-admin.version}</version>
             </dependency>
-			
+
             <!-- Mybatis 依赖配置 -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${spring-boot.mybatis}</version>
             </dependency>
-			
+
             <!-- Swagger 依赖配置 -->
             <dependency>
                 <groupId>io.swagger</groupId>
@@ -146,7 +149,31 @@
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
             </dependency>
-            
+
+
+            <!--jwt-->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <!--                <scope>provided</scope>-->
+            </dependency>
+
+            <!--hutool-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+
             <!-- 公共资源池 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -155,69 +182,69 @@
             </dependency>
 
             <!-- 核心模块 -->
-	        <dependency>
+            <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-core</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-			
+
             <!-- 接口模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-swagger</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-	        
+
             <!-- 安全模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-security</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-	        
+
             <!-- 权限范围 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-datascope</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-			
+
             <!-- 日志记录 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-log</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-			
+
             <!-- 缓存服务 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-redis</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-			
+
             <!-- 系统接口 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-api-system</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
-			
+
         </dependencies>
     </dependencyManagement>
 
     <modules>
-		<module>ruoyi-auth</module>
-		<module>ruoyi-gateway</module>
-		<module>ruoyi-visual</module>
-		<module>ruoyi-modules</module>
-		<module>ruoyi-api</module>
-		<module>ruoyi-common</module>
+        <module>ruoyi-auth</module>
+        <module>ruoyi-gateway</module>
+        <module>ruoyi-visual</module>
+        <module>ruoyi-modules</module>
+        <module>ruoyi-api</module>
+        <module>ruoyi-common</module>
     </modules>
     <packaging>pom</packaging>
 
     <dependencies>
-        
+
     </dependencies>
 
     <build>
