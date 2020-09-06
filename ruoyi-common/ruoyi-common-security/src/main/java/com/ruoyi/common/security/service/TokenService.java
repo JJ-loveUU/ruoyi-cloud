@@ -9,12 +9,17 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.convert.ConverterRegistry;
 import cn.hutool.core.lang.TypeReference;
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ruoyi.common.security.config.SecurityCofig;
 import com.ruoyi.common.security.utils.SecurityUtils;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.Constants;
@@ -29,7 +34,16 @@ import com.ruoyi.system.api.model.LoginUser;
  * @author ruoyi
  */
 @Component
+@RefreshScope
+@Data
 public class TokenService {
+
+  @Value("${jwtTokenTimeout}")
+  public Integer jwtTokenTimeout = 30;
+
+  @Autowired
+  private SecurityCofig securityCofig;
+
   @Autowired
   private RedisService redisService;
 
@@ -48,14 +62,16 @@ public class TokenService {
 //    loginUser.setToken(token);
 
     Map<String, Object> loginUserMap = new HashMap<>();
-    String
+
     loginUserMap.put("userid", loginUser.getSysUser().getUserId());
     loginUserMap.put("username", loginUser.getSysUser().getUserName());
     loginUserMap.put("loginTime", System.currentTimeMillis());
-    loginUserMap.put("expireTime", loginUser.getLoginTime() + SecurityCofig.jwtTokenTimeout * 60 * MILLIS_SECOND);
+//    loginUserMap.put("expireTime", System.currentTimeMillis() + securityCofig.getJwtTokenTimeout() * 60 * MILLIS_SECOND);
+    loginUserMap.put("expireTime", System.currentTimeMillis() +  10 * MILLIS_SECOND);
 
     //生成map对象创建token
-    String jwtToken = SecurityUtils.getJwtToken(loginUserMap);
+//    String jwtToken = SecurityUtils.getJwtToken(loginUserMap, securityCofig.getJwtTokenTimeout());
+    String jwtToken = SecurityUtils.getJwtToken(loginUserMap,  10000);
 
     // 保存或更新用户token
     Map<String, Object> map = new HashMap<String, Object>();
@@ -82,9 +98,7 @@ public class TokenService {
     // 获取请求携带的令牌
     String token = getToken(request);
     if (StringUtils.isNotEmpty(token)) {
-      String userKey = getTokenKey(token);
-      LoginUser user = redisService.getCacheObject(userKey);
-      return user;
+      return SecurityUtils.getLoginUser(token);
     }
     return null;
   }
@@ -119,9 +133,6 @@ public class TokenService {
    */
   private String getToken(HttpServletRequest request) {
     String token = request.getHeader(CacheConstants.HEADER);
-    if (StringUtils.isNotEmpty(token) && token.startsWith(CacheConstants.TOKEN_PREFIX)) {
-      token = token.replace(CacheConstants.TOKEN_PREFIX, "");
-    }
     return token;
   }
 

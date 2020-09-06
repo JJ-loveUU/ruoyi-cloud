@@ -1,9 +1,9 @@
 # Tomcat
-server: 
+server:
   port: 9200
 
 # Spring
-spring: 
+spring:
   application:
     # 应用名称
     name: ruoyi-auth
@@ -21,4 +21,7 @@ spring:
         # 配置文件格式
         file-extension: yml
         # 共享配置
-        shared-dataids: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        shared-configs[0]:
+          dataId: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          refresh: true
+

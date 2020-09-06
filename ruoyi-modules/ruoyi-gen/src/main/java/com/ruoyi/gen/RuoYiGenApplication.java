@@ -5,6 +5,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
 import com.ruoyi.common.security.annotation.EnableCustomConfig;
 import com.ruoyi.common.security.annotation.EnableRyFeignClients;
 import com.ruoyi.common.swagger.annotation.EnableCustomSwagger2;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 代码生成
@@ -15,6 +16,7 @@ import com.ruoyi.common.swagger.annotation.EnableCustomSwagger2;
 @EnableCustomSwagger2   
 @EnableRyFeignClients
 @SpringCloudApplication
+@ComponentScan("com.ruoyi")
 public class RuoYiGenApplication
 {
     public static void main(String[] args)

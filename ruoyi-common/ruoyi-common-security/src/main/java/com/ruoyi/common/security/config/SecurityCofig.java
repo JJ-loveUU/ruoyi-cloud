@@ -11,12 +11,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RefreshScope
+@Data
 public class SecurityCofig {
 
   /**
    * jwt token过期时间,分钟
    */
   @Value("${jwtTokenTimeout}")
-  public static Integer jwtTokenTimeout = 30;
+  public Integer jwtTokenTimeout = 30;
+
+//
+//  public void setJwtTokenTimeout(Integer jwtTokenTimeout) {
+//    this.jwtTokenTimeout = jwtTokenTimeout;
+//  }
+
 
 }

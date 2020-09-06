@@ -23,6 +23,7 @@ export function refreshToken() {
 
 // 获取用户详细信息
 export function getInfo() {
+  debugger;
   return request({
     url: '/system/user/getInfo',
     method: 'get'

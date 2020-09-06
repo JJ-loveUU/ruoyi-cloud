@@ -20,11 +20,10 @@ service.interceptors.request.use(config => {
   // 是否需要设置 token
   const isToken = (config.headers || {}).isToken === false
   if (getToken() && !isToken) {
-    config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际
+    config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际
   }
   return config
 }, error => {
-  console.log(error)
   Promise.reject(error)
 })
 
@@ -34,21 +33,8 @@ service.interceptors.response.use(res => {
     const code = res.data.code || 200;
     // 获取错误信息
     const msg = errorCode[code] || res.data.msg || errorCode['default']
-    if (code === 401) {
-      MessageBox.confirm(
-        '登录状态已过期，您可以继续留在该页面，或者重新登录',
-        '系统提示',
-        {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      ).then(() => {
-        store.dispatch('LogOut').then(() => {
-          location.reload() // 为了重新实例化vue-router对象 避免bug
-        })
-      })
-    } else if (code === 500) {
+    if (code === 500 ||  code ===401) {
+
       Message({
         message: msg,
         type: 'error'
@@ -60,12 +46,6 @@ service.interceptors.response.use(res => {
       })
       return Promise.reject('error')
     } else {
-      debugger;
-      if (getToken()) {
-        const inFifteenMinutes = new Date(new Date().getTime() + 1 * 60 * 1000);
-        cookier.set("Admin-Token", getToken(), {expires: inFifteenMinutes});
-        // cookier.set("Admin-Token", {expires: inFifteenMinutes})
-      }
       return res.data
     }
   },

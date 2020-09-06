@@ -23,44 +23,38 @@ import reactor.core.publisher.Mono;
  */
 @Order(-1)
 @Configuration
-public class GatewayExceptionHandler implements ErrorWebExceptionHandler
-{
-    private static final Logger log = LoggerFactory.getLogger(GatewayExceptionHandler.class);
+public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
+  private static final Logger log = LoggerFactory.getLogger(GatewayExceptionHandler.class);
 
-    @Override
-    public Mono<Void> handle(ServerWebExchange exchange, Throwable ex)
-    {
-        ServerHttpResponse response = exchange.getResponse();
+  @Override
+  public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
 
-        if (exchange.getResponse().isCommitted())
-        {
-            return Mono.error(ex);
-        }
+    ex.printStackTrace();
+    ServerHttpResponse response = exchange.getResponse();
 
-        String msg;
-
-        if (ex instanceof NotFoundException)
-        {
-            msg = "服务未找到";
-        }
-        else if (ex instanceof ResponseStatusException)
-        {
-            ResponseStatusException responseStatusException = (ResponseStatusException) ex;
-            msg = responseStatusException.getMessage();
-        }
-        else
-        {
-            msg = "内部服务器错误";
-        }
-
-        log.error("[网关异常处理]请求路径:{},异常信息:{}", exchange.getRequest().getPath(), ex.getMessage());
-
-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        response.setStatusCode(HttpStatus.OK);
-
-        return response.writeWith(Mono.fromSupplier(() -> {
-            DataBufferFactory bufferFactory = response.bufferFactory();
-            return bufferFactory.wrap(JSON.toJSONBytes(R.fail(msg)));
-        }));
+    if (exchange.getResponse().isCommitted()) {
+      return Mono.error(ex);
     }
+
+    String msg;
+
+    if (ex instanceof NotFoundException) {
+      msg = "服务未找到";
+    } else if (ex instanceof ResponseStatusException) {
+      ResponseStatusException responseStatusException = (ResponseStatusException) ex;
+      msg = responseStatusException.getMessage();
+    } else {
+      msg = "内部服务器错误";
+    }
+
+    log.error("[网关异常处理]请求路径:{},异常信息:{}", exchange.getRequest().getPath(), ex.getMessage());
+
+    response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+    response.setStatusCode(HttpStatus.OK);
+
+    return response.writeWith(Mono.fromSupplier(() -> {
+      DataBufferFactory bufferFactory = response.bufferFactory();
+      return bufferFactory.wrap(JSON.toJSONBytes(R.fail(msg)));
+    }));
+  }
 }
